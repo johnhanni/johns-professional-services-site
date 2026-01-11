@@ -50,3 +50,17 @@ h1 {
 p {
     max-width: 70ch;
 }
+
+.hero {
+    padding: 48px 0 32px;
+}
+
+.hero h1 {
+    font-size: 40px;
+    max-width: 20ch;
+}
+
+.hero p {
+    font-size: 18px;
+    color: 444;
+}
