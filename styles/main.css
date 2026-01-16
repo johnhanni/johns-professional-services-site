@@ -18,6 +18,12 @@ main {
     padding: 24px 16px;
 }
 
+a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
 nav {
     background: #fff;
     border-bottom: 1px solid #e5e7eb;
@@ -73,40 +79,48 @@ nav {
     opacity: 0.75;
 }   
 
-.brand-link:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 4px;
-    border-radius: 6px;
-}
-
-section {
-    padding-block: 64px;
-}
-
-section.hero {
-    /* Overrides defailt section top and bottom padding only*/
-    padding-top: 48px;
-    padding-bottom: 32px;
-}
-
 h1 {
     margin-top: 0;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
 }
 
 p {
     max-width: 70ch;
 }
 
+.section {
+    padding-block: 64px;
+    max-width: 70ch; /* set container width for section content, allows margins to center container */
+    margin-inline: auto;
+}
+
+.section ul {
+    max-width: 70ch;
+    margin: 16px 0 0;
+    padding-left: 1.25rem;
+}
+
+.section li {
+    margin: 6px 0;
+}
+
 .hero {
     margin-inline: auto;
     text-align: left;
-    max-width: 60ch;
+    max-width: 70ch;
+    /* Overrides defailt section top and bottom padding only*/
+    padding-top: 48px;
+    padding-bottom: 32px;
 }
 
 .hero h1 {
     line-height: 1.1;
     font-size: clamp(28px, 3.5vw, 32px);
-    max-width: 36ch;
+    max-width: 30ch;
     margin-bottom: 16px;
 }
 
@@ -143,7 +157,6 @@ p {
 
 .cta-button:focus-visible {
     outline: 2px solid #111;
-    outline-offset: 4px;
 }
 
 .cta-helper {
@@ -156,10 +169,4 @@ p {
 
 .cta-helper:hover {
     text-decoration: underline;
-}
-
-/* For accessibility */
-a.cta-helper:focus-visible {
-    outline: 2px solid #555;
-    outline-offset: 4px;
 }
