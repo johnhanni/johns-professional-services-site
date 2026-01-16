@@ -18,8 +18,19 @@ main {
     padding: 24px 16px;
 }
 
+main a:not(.button, .button--primary) {
+    color: hsl(0, 0%, 7%);
+    font-weight: 550;
+    text-decoration: none;
+}
+
+main a:not(.button, .button--primary):hover {
+    opacity: 0.85;
+    text-decoration: underline;
+}
+
 a:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid #111;
     outline-offset: 4px;
     border-radius: 6px;
 }
@@ -84,7 +95,7 @@ h1 {
 }
 
 h2 {
-    margin-top: 0;
+    margin-top: 36px;
     margin-bottom: 12px;
 }
 
@@ -139,7 +150,24 @@ p {
     gap: 8px;
 }
 
-.cta-button {
+.button {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #b6c0cc;
+    background: #fff;
+    color: #111;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.button:hover {
+    background-color: #fffbe6;
+    border-color: #222
+}
+
+.button--primary {
     display: inline-block;
     padding: 12px 20px;
     background-color: #111;
@@ -151,11 +179,11 @@ p {
     transition: background-color 150ms ease;
 }
 
-.cta-button:hover {
+.button--primary:hover {
     background-color: #333;
 }
 
-.cta-button:focus-visible {
+.button--primary:focus-visible {
     outline: 2px solid #111;
 }
 
