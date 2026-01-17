@@ -121,6 +121,10 @@ h2 {
     /* Overrides defailt section top and bottom padding only*/
     padding-block: 3rem 2rem;
     padding-inline: clamp(0.75rem, 2.5vw, 1.25rem);
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .hero h1 {
