@@ -146,6 +146,7 @@ h2 {
 
 .button {
     display: inline-block;
+    margin-top: 1rem;
     padding: 0.7rem 1.25rem;
     border-radius: 10px;
     border: 1px solid #b6c0cc;
