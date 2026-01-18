@@ -153,7 +153,7 @@ h2 {
     margin-top: 1rem;
     padding: 0.7rem 1.25rem;
     border-radius: 10px;
-    border: 1px solid #b6c0cc;
+    border: 1px solid #777;
     background: #fff;
     color: #111;
     text-decoration: none;
@@ -169,17 +169,20 @@ h2 {
 .button--primary { /* CTA button style */
     display: inline-block;
     padding: 0.75rem 1.25rem;
-    background-color: #111;
+    border: 2px solid #111;
+    background-color: #0a2561;
     color: #fff;
     text-decoration: none;
     font-size: 1.0625rem;
     border-radius: 8px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.18);
     font-weight: 700;
     transition: background-color 150ms ease;
 }
 
 .button--primary:hover {
-    background-color: #333;
+    background-color: #111;
+    border: 2px solid #0a2561;
 }
 
 .button--primary:focus-visible {
