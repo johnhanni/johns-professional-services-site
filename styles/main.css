@@ -37,7 +37,7 @@ a:focus-visible {
 
 nav {
     background: #fff;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .nav-container {
@@ -94,12 +94,16 @@ h1 {
 }
 
 h2 {
+    margin-top: 0;
+}
+
+.section :not(h2) + h2 {
     margin-top: 2.25rem;
     margin-bottom: 0.75rem;
 }
 
 .section {
-    padding-block: 4rem;
+    padding-block: 2.5rem;
     max-width: 70ch; /* set container width for section content, allows margins to center container */
     margin-inline: auto;
 }
@@ -122,7 +126,7 @@ h2 {
     padding-block: 3rem 2rem;
     padding-inline: clamp(0.75rem, 2.5vw, 1.25rem);
     background-color: #fff;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #e5e5e5;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -153,8 +157,8 @@ h2 {
     margin-top: 1rem;
     padding: 0.7rem 1.25rem;
     border-radius: 10px;
-    border: 1px solid #777;
-    background: #fff;
+    border: 1px solid #333;
+    background: #fffbe6;
     color: #111;
     text-decoration: none;
     font-weight: 600;
@@ -162,8 +166,9 @@ h2 {
 }
 
 .button:hover {
-    background-color: #fffbe6;
-    border-color: #222
+    background-color: #f2f2f3;
+    border-color: #000;
+    cursor: pointer;
 }
 
 .button--primary { /* CTA button style */
@@ -199,4 +204,49 @@ h2 {
 
 .cta-helper:hover {
     text-decoration: underline;
+}
+
+.contact-form {
+    max-width: 30rem;
+}
+
+.contact-form h2 {
+    font-size: 1.7rem;
+}
+
+.contact-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-weight: 600;
+}
+
+.contact-form-card {
+    background: #fff;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-inline: auto;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    padding: 0.5rem;
+    border: 1.5px solid #111;
+    border-radius: 6px;
+    width: 100%;
+    font-family: inherit;
+}
+
+.contact-form form button.button {
+    align-self: flex-start;
 }

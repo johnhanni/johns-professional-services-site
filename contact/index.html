@@ -27,9 +27,59 @@
             <p>If you prefer, you can also reach me by email at <a href="mailto:john.hanni.services@gmail.com">john.hanni.services@gmail.com</a> or by phone or text at <a href="tel:+18147670471">(814) 767-0471</a>.</p>
         </section>
         <section class="section contact-form" id="contact-form">
-            <form>
-
-            </form>
+            <h2>Send a message</h2>
+            <div class="contact-form-card">
+                <form>
+                    <div class="form-field">
+                        <label for="name">Your Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name"
+                            autocomplete="name" 
+                            required
+                        />
+                   </div>
+                    <div class="form-field">
+                        <label for="email">Your Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            autocomplete="email" 
+                            required
+                        />
+                    </div>
+                    <div class="form-field">
+                        <label for="reason">What are you reaching out about?</label>
+                        <select id="reason"
+                                name="reason"
+                                autocomplete="off"
+                                placeholder="Tell me what you're looking for?"
+                       >
+                            <option value="General question">General question</option>
+                            <option value="Website build or update">Website build or update</option>
+                         <option value="Project support or technical services">Project support or technical services</option>
+                            <option value="General work request">General work request</option>
+                            <option value="Not sure yet, just want to talk">Not sure yet, just want to talk</option>
+                            <option value="Other inquiry">Other inquiry</option>
+                     </select>
+                 </div>
+                    <div class="form-field">
+                        <label for="message">Message</label>
+                       <textarea 
+                            id="message" 
+                            name="message" 
+                            rows="6" 
+                            required
+                            placeholder="What is your message?"
+                     ></textarea>
+                    </div>
+                    <button class="button"
+                        type="submit" 
+                   >Send Message</button>
+                </form>
+            </div>
         </section>    
     </main>
 </body>
