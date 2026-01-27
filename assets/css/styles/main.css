@@ -1,15 +1,14 @@
 /* TODO
-    - Define global design tokens (colors first, then spacing/radius as needed)
-    - Standardize border styles (move shared borders to opacity-based values)
-    - Clean up and group selectors (base → layout → components → utilities)
-    - Add sticky nav (desktop-first; revisit mobile behavior later)
-    - Change color theme to parchment, beige, tan tones
-    Notes:
-    - Page width (60rem) vs reading measure (70ch) is intentional — document this
-    - Nav spacing is “good enough” for v1; don’t over-tune until layout is locked
-    - Contact form UX + behavior is higher priority than further layout polish
-    
-   */
+   - Define global design tokens (colors first, then spacing/radius as needed)
+   - Standardize border styles (move shared borders to opacity-based values)
+   - Clean up and group selectors (base → layout → components → utilities)
+   - Add sticky nav (desktop-first; revisit mobile behavior later)
+
+   Notes:
+   - Page width (60rem) vs reading measure (70ch) is intentional — document this
+   - Nav spacing is “good enough” for v1; don’t over-tune until layout is locked
+   - Contact form UX + behavior is higher priority than further layout polish
+*/
 
 
 *,
@@ -42,7 +41,7 @@ main {
 }
 
 main a:not(.button, .button--primary) {
-    color: hsl(0, 0%, 7%);
+    color: #0d3a8a;
     font-weight: 550;
     text-decoration: none;
 }
@@ -81,7 +80,7 @@ nav {
 .nav-links a {
     text-decoration: none;
     color: #111;
-    font-weight: 500;
+    font-weight: 600;
     padding: 0.5rem 0.625rem;
     border-radius: 8px;
     transition: background-color 150ms ease; 
@@ -146,7 +145,7 @@ h2 {
     max-width: 70ch;
     /* Overrides defailt section top and bottom padding only*/
     padding-block: 3rem 2rem;
-    padding-inline: clamp(0.75rem, 3vw, 4rem);
+    padding-inline: clamp(0.75rem, 2.5vw, 1.25rem);
     background-color: #fff;
     border: 1px solid #e5e5e5;
     border-radius: 12px;
@@ -179,7 +178,7 @@ h2 {
     margin-top: 1rem;
     padding: 0.7rem 1.25rem;
     border-radius: 10px;
-    border: 1px solid #333;
+    border: 1px solid #cfcfcf;
     background: #fffbe6;
     color: #111;
     text-decoration: none;
@@ -248,15 +247,15 @@ h2 {
     flex-direction: column;
     gap: 1rem;
     font-weight: 600;
+    resize: vertical;
 }
 
 .contact-form-card {
     background: #fff;
-    padding: 2rem;
-    margin-top: 2rem;
+    padding: clamp(2rem, 3vw, 3rem) clamp(2rem, 4vw, 5rem);
+    margin-top: 3rem;
     margin-inline: auto;
     border-radius: 8px;
-    max-width: 30rem;
     border: 1px solid #e5e5e5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -264,11 +263,28 @@ h2 {
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
-    padding: 0.5rem;
-    border: 1.5px solid #111;
+    background-color: #fff;
+    padding: 0.6rem 0.75rem;
+    border: 1.5px solid #cfcfcf;
+    color: #111;
     border-radius: 6px;
     width: 100%;
     font-family: inherit;
+    resize: vertical;
+}
+
+.contact-form input:focus-visible,
+.contact-form select:focus-visible,
+.contact-form textarea:focus-visible,
+.contact-form select:focus {
+    outline: none;
+    border-color: #111;
+    box-shadow: 0 0 0 3px rgba(10, 37, 97, 0.22);
+}
+
+.contact-form textarea {
+    min-height: 10rem;
+    resize: vertical;
 }
 
 .contact-form form button.button {
