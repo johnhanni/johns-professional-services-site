@@ -27,10 +27,12 @@
             <p>I read every message and typically respond within one business day.</p>
             <p>If you prefer, you can also reach me by email at <a href="mailto:john.hanni.services@gmail.com">john.hanni.services@gmail.com</a> or by phone or text at <a href="tel:+18147670471">(814) 767-0471</a>.</p>
         </section>
-        <section class="section contact-form" id="contact-form">
+        <section 
+            class="section contact-form" 
+            id="contact-form-section">
             <h2>Send a message</h2>
             <div class="contact-form-card">
-                <form>
+                <form id="contact-form" method="POST" action="/api/contact">
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAACOtuqSv5kzStcou"></div>
                     <div class="form-field">
                         <label for="name">Your Name</label>
@@ -39,8 +41,7 @@
                             id="name" 
                             name="name"
                             autocomplete="name" 
-                            required
-                        />
+                            required />
                    </div>
                     <div class="form-field">
                         <label for="email">Your Email</label>
@@ -49,15 +50,13 @@
                             id="email" 
                             name="email"
                             autocomplete="email" 
-                            required
-                        />
+                            required />
                     </div>
                     <div class="form-field">
                         <label for="reason">What are you reaching out about?</label>
                         <select id="reason"
                                 name="reason"
-                                autocomplete="off"
-                       >
+                                autocomplete="off">
                             <option value="General question">General question</option>
                             <option value="Website build or update">Website build or update</option>
                          <option value="Project support or technical services">Project support or technical services</option>
@@ -67,18 +66,20 @@
                      </select>
                  </div>
                     <div class="form-field">
-                        <label for="message">Message</label>
+                       <label for="message">Message</label>
                        <textarea 
                             id="message" 
                             name="message" 
                             rows="8" 
                             required
-                            placeholder="What is your message?"
-                     ></textarea>
+                            placeholder="What is your message?">
+                    </textarea>
                     </div>
-                    <button class="button"
-                        type="submit" 
-                   >Send Message</button>
+                    <button 
+                        class="button"
+                        type="submit">
+                        Send Message
+                    </button>
                 </form>
             </div>
         </section>    
