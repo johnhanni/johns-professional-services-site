@@ -7,7 +7,7 @@
  * - Receives POST requests from the site contact form
  * - Verifies the Cloudflare Turnstile token to prevent spam/bot submissions
  * - Parses and validates form input data
- * - Forwards the message to the configured email destination
+ * - FUTURE STEP: Forwards the message to the configured email destination
  * - Returns a JSON response indicating success or failure
  *
  * Environment:
@@ -31,11 +31,26 @@
  */
 
 type Env = {
-  TURNSTILE_SECRET_KEY: string;
+    TURNSTILE_SECRET_KEY: string;
 };
 
 type VerifyResponse = {
     success: boolean;
+};
+
+type ApiResponse = 
+    | { ok: true; message: string }
+    | { 
+        ok: false;
+        message: string;
+        field?: "name" | "email" | "reason" | "message" | "turnstile" 
+      };
+
+function json(status: number, data: ApiResponse): Response {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+    });
 }
 
 export async function onRequestPost(context: {
@@ -43,6 +58,7 @@ export async function onRequestPost(context: {
     env: Env;
 }): Promise<Response> {
     const { request, env } = context;
+
     const formData = await request.formData();
     const name = String(formData.get("name") ?? "").trim();
     const email = String(formData.get("email") ?? "").trim();
@@ -51,11 +67,11 @@ export async function onRequestPost(context: {
 
     const token = String(formData.get("cf-turnstile-response") ?? "").trim();
     if (!name || !email || !reason || !message) {
-        return new Response("Please complete all required fields.", { status: 400 });
+        return json(400, { ok: false, message: "Please complete all required fields." });
     }
 
     if (!token) {
-        return new Response("Captcha verification failed. Please try again.", { status: 400 });
+        return json(400, { ok: false, message: "Please complete the Captcha.", field: "turnstile" });
     }
 
     const ip = request.headers.get("CF-Connecting-IP") || "";
@@ -65,16 +81,24 @@ export async function onRequestPost(context: {
     verifyBody.append("response", token);
     if (ip) verifyBody.append("remoteip", ip);
 
-    const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-        method: "POST",
-        headers: { "content-type: application/x-www-form-urlencoded"},
-        body: verifyBody.toString()
-    )
+    const verifyRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify", 
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: verifyBody.toString(),
+        }
+    );
 
-    const verifyJson.success = (await verifyRes.json()) as VerifyResponse;
+    const verifyJson = (await verifyRes.json()) as VerifyResponse;
+
     if (!verifyJson.success) {
-        return new Response("Captcha verification failed, pleaset try again.", { status: 403 });
+        return json(403, { ok: false, message: "Captcha verification failed. Please try again.", field = "turnstile" });
     }
 
-    return new Response("Thank you for messaging me! Your message has been sent successfully. I will be in contact with you within the next business day.", { status: 200 })
-    }
+    return json(200, { 
+        ok: true, 
+        message: 
+            "Thank you for messaging me! Your message has been sent successfully. I will be in contact with you within the next business day.",
+    });
+}
