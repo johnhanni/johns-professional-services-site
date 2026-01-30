@@ -93,7 +93,7 @@ export async function onRequestPost(context: {
     const verifyJson = (await verifyRes.json()) as VerifyResponse;
 
     if (!verifyJson.success) {
-        return json(403, { ok: false, message: "Captcha verification failed. Please try again.", field = "turnstile" });
+        return json(403, { ok: false, message: "Captcha verification failed. Please try again.", field: "turnstile" });
     }
 
     return json(200, { 
