@@ -75,12 +75,25 @@
                             placeholder="What is your message?">
                     </textarea>
                     </div>
+                    <p
+                        id="form-status"
+                        class="form-status"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></p>
                     <button 
                         class="button"
-                        type="submit">
+                        type="submit"
+                        data-submit>
                         Send Message
                     </button>
                 </form>
+                <script
+                    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                    async
+                    defer>
+                </script>
             </div>
         </section>    
     </main>
