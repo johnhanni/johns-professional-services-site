@@ -290,3 +290,37 @@ h2 {
 .contact-form form button.button {
     align-self: flex-start;
 }
+
+.cf-turnstile {
+    display: flex;
+    justify-content: center;
+}
+
+.form-status {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.form-status[data-type="success"] {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #0f5132;
+}
+
+.form-status[data-type="error"] {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #842029;
+}
+
+.form-status[data-type="info"] {
+    color: #084298;
+    background-color: #cfe2ff;
+    border-color: #084298;
+}
