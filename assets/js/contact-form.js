@@ -6,12 +6,12 @@
  */
 console.log("contact-form.js has loaded successfully");
 
-(() => {
+;(() => {
     const form = document.querySelector("#contact-form");
     if (!form) return;
 
     const statusEl = document.querySelector("#form-status");
-    const submitBtn = form.querySelector("[data-submit]")
+    const submitBtn = form.querySelector("[data-submit]");
 
     function setStatus(message, type) {
         if(!statusEl) return;
@@ -34,6 +34,8 @@ console.log("contact-form.js has loaded successfully");
     }
 
     form.addEventListener("submit", async (event) => {
+        console.log("submit intercepted"); //Debugging form JS handling
+        
         event.preventDefault();
         
         clearStatus();
