@@ -4,7 +4,7 @@
  * - With JS disabled: the form submits normally (full page load).
  * - With JS enabled: we intercept submit, POST via fetch(), and show inline status messages.
  */
-console.log("contact-form.js has loaded successfully")
+console.log("contact-form.js has loaded successfully");
 
 (() => {
     const form = document.querySelector("#contact-form");
