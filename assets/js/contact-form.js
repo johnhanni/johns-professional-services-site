@@ -32,9 +32,7 @@
         submitBtn.textContent = isSubmitting ? "Sending..." : "Send Message";
     }
 
-    form.addEventListener("submit", async (event) => {
-        console.log("submit intercepted"); //Debugging form JS handling
-        
+    form.addEventListener("submit", async (event) => {  
         event.preventDefault();
         
         clearStatus();
@@ -42,7 +40,6 @@
 
         try {
             const formData = new FormData(form);
-            console.log("turnstile token:", formData.get("cf-turnstile-response"))
 
             const res = await fetch(form.action, {
                 method: form.method || "POST",
