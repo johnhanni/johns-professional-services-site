@@ -4,7 +4,6 @@
  * - With JS disabled: the form submits normally (full page load).
  * - With JS enabled: we intercept submit, POST via fetch(), and show inline status messages.
  */
-console.log("contact-form.js has loaded successfully");
 
 ;(() => {
     const form = document.querySelector("#contact-form");
@@ -43,6 +42,7 @@ console.log("contact-form.js has loaded successfully");
 
         try {
             const formData = new FormData(form);
+            console.log("turnstile token:", formData.get("cf-turnstile-response"))
 
             const res = await fetch(form.action, {
                 method: form.method || "POST",
