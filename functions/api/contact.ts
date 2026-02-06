@@ -32,6 +32,9 @@
 
 //TODO: Review variable naming conventions
 
+
+//-------Types-------
+
 type Env = {
     TURNSTILE_SECRET_KEY: string;
     RESEND_API_KEY: string;
@@ -39,7 +42,7 @@ type Env = {
     CONTACT_TO_EMAIL: string;
 };
 
-type VerifyResponse = {
+type TurnstileVerifyResponse = {
     success: boolean;
 };
 
@@ -50,6 +53,46 @@ type ApiResponse =
         message: string;
         field?: "name" | "email" | "reason" | "message" | "turnstile" 
       };
+
+//-------Constants-------
+
+const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+const RESEND_EMAILS_URL = "https://api.resend.com/emails";
+const ALLOWED_REASONS = new Set([
+    "General question",
+    "Website build or update",
+    "Project support or technical services",
+    "General work request",
+    "Not sure yet, just want to talk",
+    "Other inquiry",
+]);
+
+//-------Helpers-------
+
+function readString(formData: FormData, key: string): string {
+    return String(formData.get(key) ?? "").trim();
+}
+
+function isProbablyEmail(value: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function json(status: number, data: ApiResponse): Response {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: { 
+            "Content-Type": "application/json; charset=utf-8",
+            "Cache-Control": "no-store",
+        },
+    });
+}
+
+/**
+ * Sends the contact form email via Resend.
+ * 
+ * Returns a small success object with an email id, or a failure object with an error message.
+ * This keeps the handler focused on request/validation flow instead of email API details.
+ */
 
 async function sendContactEmail(params: {
     resendApiKey: string;
@@ -69,7 +112,7 @@ async function sendContactEmail(params: {
         `Reason: ${params.reason}\n\n` +
         `Message:\n${params.message}\n`;
 
-    const res = await fetch("https://api.resend.com/emails", {
+    const res = await fetch(RESEND_EMAILS_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -80,9 +123,9 @@ async function sendContactEmail(params: {
             to: params.to,
             subject,
             text,
-
+            // Resend expects snake_case for this field name.
             reply_to: params.email,
-        }), //lookup why comma here
+        }),
     });
 
     const data = (await res.json()) as { id?: string; message?: string };
@@ -97,13 +140,7 @@ async function sendContactEmail(params: {
     return { ok: true, id: data.id };
 }
 
-
-function json(status: number, data: ApiResponse): Response {
-    return new Response(JSON.stringify(data), {
-        status,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-    });
-}
+//-------Handler-------
 
 export async function onRequestPost(context: {
     request: Request;
@@ -112,14 +149,34 @@ export async function onRequestPost(context: {
     const { request, env } = context;
 
     const formData = await request.formData();
-    const name = String(formData.get("name") ?? "").trim();
-    const email = String(formData.get("email") ?? "").trim();
-    const reason = String(formData.get("reason") ?? "").trim();
-    const message = String(formData.get("message") ?? "").trim();
-    const token = String(formData.get("cf-turnstile-response") ?? "").trim();
-    if (!name || !email || !reason || !message) {
-        return json(400, { ok: false, message: "Please complete all required fields." });
+    const website = readString(formData, "website");
+    const name = readString(formData, "name");
+    const email = readString(formData, "email");
+    const reason = readString(formData, "reason");
+    const message = readString(formData, "message");
+    const token = readString(formData, "cf-turnstile-response");
+
+    // Honeypot check.
+    if (website) {
+        return json(400, { ok: false, message: "Invalid submission." });
     }
+
+    if (!name) return json(400, { ok: false, message: "Please enter your name.", field: "name" });
+    if (!email) return json(400, { ok: false, message: "Please enter your email.", field: "email" });
+    if (!reason) return json(400, { ok: false, message: "Please choose a reason.", field: "reason" });
+    if (!message) return json(400, { ok: false, message: "Please enter a message.", field: "message" });
+    
+    if (!isProbablyEmail(email)) {
+        return json(400, { ok: false, message: "Please enter a valid email address.", field: "email" });
+    }
+
+    if (!ALLOWED_REASONS.has(reason)) {
+        return json(400, { ok: false, message: "Please choose a valid reason.", field: "reason" });
+    }
+
+    if (name.length > 80) return json(400, { ok: false, message: "Name is too long.", field: "name" });
+    if (email.length > 254) return json(400, { ok: false, message: "Email is too long.", field: "email"});
+    if (message.length > 5000) return json(400, { ok: false, message: "Message is too long (max 5,000 characters).", field: "message" });
 
     if (!token) {
         return json(400, { ok: false, message: "Please complete the Captcha.", field: "turnstile" });
@@ -132,16 +189,30 @@ export async function onRequestPost(context: {
     verifyBody.append("response", token);
     if (ip) verifyBody.append("remoteip", ip);
 
-    const verifyRes = await fetch(
-        "https://challenges.cloudflare.com/turnstile/v0/siteverify", 
-        {
+    let verifyRes: Response;
+    
+    try {
+        verifyRes = await fetch(TURNSTILE_VERIFY_URL, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: verifyBody.toString(),
-        }
-    );
+        });
+    } catch {
+        return json(502, {
+            ok: false,
+            message: "Captcha verification failed due to a network error. Please try again.", field: "turnstile",
+        });
+    }
 
-    const verifyJson = (await verifyRes.json()) as VerifyResponse;
+    if (!verifyRes.ok) {
+        return json(502, {
+            ok: false,
+            message: "Captcha verification failed. Please try again.",
+            field: "turnstile",
+        });
+    }
+
+    const verifyJson = (await verifyRes.json()) as TurnstileVerifyResponse;
 
     if (!verifyJson.success) {
         return json(403, { ok: false, message: "Captcha verification failed. Please try again.", field: "turnstile" });
