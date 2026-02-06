@@ -30,8 +30,13 @@
  * and private infrastructure (validation, email delivery).
  */
 
+//TODO: Review variable naming conventions
+
 type Env = {
     TURNSTILE_SECRET_KEY: string;
+    RESEND_API_KEY: string;
+    CONTACT_FROM_EMAIL: string;
+    CONTACT_TO_EMAIL: string;
 };
 
 type VerifyResponse = {
@@ -45,6 +50,53 @@ type ApiResponse =
         message: string;
         field?: "name" | "email" | "reason" | "message" | "turnstile" 
       };
+
+async function sendContactEmail(params: {
+    resendApiKey: string;
+    from: string;
+    to: string;
+    name: string;
+    email: string;
+    reason: string;
+    message: string;
+}): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
+    const subject = `New contact form message: ${params.reason}`;
+
+    const text =
+        `New message from your website contact form\n\n` +
+        `Name: ${params.name}\n` +
+        `Email: ${params.email}\n` +
+        `Reason: ${params.reason}\n\n` +
+        `Message:\n${params.message}\n`;
+
+    const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${params.resendApiKey}`,
+        },
+        body: JSON.stringify({
+            from: params.from,
+            to: params.to,
+            subject,
+            text,
+
+            reply_to: params.email,
+        }), //lookup why comma here
+    });
+
+    const data = (await res.json()) as { id?: string; message?: string };
+
+    if (!res.ok || !data.id) {
+        return {
+            ok: false,
+            error: data.message ?? "Resend failed to send email.",
+        };
+    }
+
+    return { ok: true, id: data.id };
+}
+
 
 function json(status: number, data: ApiResponse): Response {
     return new Response(JSON.stringify(data), {
@@ -64,7 +116,6 @@ export async function onRequestPost(context: {
     const email = String(formData.get("email") ?? "").trim();
     const reason = String(formData.get("reason") ?? "").trim();
     const message = String(formData.get("message") ?? "").trim();
-
     const token = String(formData.get("cf-turnstile-response") ?? "").trim();
     if (!name || !email || !reason || !message) {
         return json(400, { ok: false, message: "Please complete all required fields." });
@@ -95,10 +146,33 @@ export async function onRequestPost(context: {
     if (!verifyJson.success) {
         return json(403, { ok: false, message: "Captcha verification failed. Please try again.", field: "turnstile" });
     }
+    
+    const resendApiKey = env.RESEND_API_KEY;
+    const from = env.CONTACT_FROM_EMAIL;
+    const to = env.CONTACT_TO_EMAIL;
+
+    if (!resendApiKey || !from || !to) {
+        return json(500, { ok: false, message: "Server email is not configured yet." });
+    }
+
+    const sendResult = await sendContactEmail({
+        resendApiKey,
+        from,
+        to,
+        name,
+        email,
+        reason,
+        message,
+    });
+
+    if (!sendResult.ok) {
+        return json(502, { ok: false, message: "Message received, but failed to send email. Please try again." }); //TODO Create better message
+    }
 
     return json(200, { 
         ok: true, 
         message: 
             "Thank you for messaging me! Your message has been sent successfully. I will be in contact with you within the next business day.",
     });
+
 }
