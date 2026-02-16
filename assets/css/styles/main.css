@@ -17,22 +17,30 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bgcolor: #f6e6d2;
+    --textcolor: #553300;
+    --muted: rgba(85, 51, 0, 0.72);
+    --line: rgba(85, 51, 0, 0.28);
+}
+
 body {
     margin: 0;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.5;
-    color: #111;
-    background: #e5e5e5;
+    color: var(--textcolor);
+    background: var(--bgcolor);
 }
 
 .site-wrapper {
     max-width: 60rem;
+    min-height: 100vh;
     margin-inline: auto;
     padding: 0;
-    background: #f7f7f8;
-    box-shadow: 
+    background: var(--bgcolor);
+    /*box-shadow: 
         -1px 0 3px rgba(0, 0, 0, 0.07),
-        1px 0 3px rgba(0, 0, 0, 0.07);
+        1px 0 3px rgba(0, 0, 0, 0.07);*/ /*removed for modernizing design*/
 }
 
 main {
@@ -41,7 +49,7 @@ main {
 }
 
 main a:not(.button, .button--primary) {
-    color: #0d3a8a;
+    color: var(--textcolor);
     font-weight: 550;
     text-decoration: none;
 }
@@ -52,14 +60,15 @@ main a:not(.button, .button--primary):hover {
 }
 
 a:focus-visible {
-    outline: 2px solid #111;
+    outline: var(--textcolor);
     outline-offset: 4px;
     border-radius: 6px;
 }
 
 nav {
-    background: #fff;
-    border-bottom: 1px solid #e5e5e5;
+    background: var(--bgcolor);
+    font-size: 1.0625rem;
+    /*border-bottom: 1px solid #e5e5e5;*/ /*removed for modernizing design*/
 }
 
 .nav-container {
@@ -79,7 +88,7 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #111;
+    color: var(--textcolor);
     font-weight: 600;
     padding: 0.5rem 0.625rem;
     border-radius: 8px;
@@ -87,7 +96,8 @@ nav {
 }
 
 .nav-links a:hover {
-   background-color: #f2f2f3;
+   background-color: var(--textcolor);
+   color: var(--bgcolor);
 }
 
 .brand {
@@ -146,10 +156,10 @@ h2 {
     /* Overrides defailt section top and bottom padding only*/
     padding-block: 3rem 2rem;
     padding-inline: clamp(0.75rem, 3vw, 4rem);
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
+    background-color: var(--bgcolor);
+    /*border: 1px solid #e5e5e5;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/ /*removed for modernizing design*/
 }
 
 .hero h1 {
@@ -161,7 +171,7 @@ h2 {
 .hero p {
     font-size: 1.25rem;
     line-height: 1.45;
-    color: #444;
+    color: var(--textcolor);
     margin-bottom: 1.5rem
 }
 
@@ -178,47 +188,46 @@ h2 {
     margin-top: 1rem;
     padding: 0.7rem 1.25rem;
     border-radius: 10px;
-    border: 1px solid #cfcfcf;
-    background: #fffbe6;
-    color: #111;
+    border: 2px solid var(--textcolor);
+    background: var(--bgcolor);
+    color: var(--textcolor);
     text-decoration: none;
-    font-weight: 600;
+    font-size: 1.0625rem;
+    font-weight: 700;
     transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .button:hover {
-    background-color: #f2f2f3;
-    border-color: #000;
+    background-color: var(--textcolor);
+    color: var(--bgcolor);
     cursor: pointer;
 }
 
 .button--primary { /* CTA button style */
     display: inline-block;
     padding: 0.75rem 1.25rem;
-    border: 2px solid #111;
-    background-color: #0a2561;
-    color: #fff;
+    border: 2px solid var(--textcolor);
+    background-color: var(--bgcolor);
+    color: var(--textcolor);
     text-decoration: none;
     font-size: 1.0625rem;
     border-radius: 8px;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.18);
+    /*box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.18);*/ /*removed for modernizing design*/
     font-weight: 700;
-    transition: background-color 150ms ease;
 }
 
 .button--primary:hover {
-    background-color: #111;
-    border: 2px solid #0a2561;
+    background-color: var(--textcolor);
+    color: var(--bgcolor);
 }
-
 .button--primary:focus-visible {
-    outline: 2px solid #111;
+    outline: 2px solid var(--textcolor);
 }
 
 .cta-helper {
     display: inline-block;
     font-size: 0.875rem;
-    color: #555;
+    color: var(--textcolor);
     text-decoration: none;
     cursor: pointer;
 }
@@ -251,35 +260,39 @@ h2 {
 }
 
 .contact-form-card {
-    background: #fff;
+    background: var(--bgcolor);
     padding: clamp(2rem, 3vw, 3rem) clamp(2rem, 4vw, 5rem);
     margin-top: 3rem;
     margin-inline: auto;
-    border-radius: 8px;
+    /*border-radius: 8px;
     border: 1px solid #e5e5e5;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/ /*removed for modernizing design*/
 }
 
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
-    background-color: #fff;
+    background-color: var(--bgcolor);
     padding: 0.6rem 0.75rem;
-    border: 1.5px solid #cfcfcf;
-    color: #111;
-    border-radius: 6px;
+    border: 2px solid var(--textcolor);
+    color: var(--textcolor);
+    border-radius: 8px;
     width: 100%;
     font-family: inherit;
+    font-weight: 550;
     resize: vertical;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .contact-form input:focus-visible,
 .contact-form select:focus-visible,
 .contact-form textarea:focus-visible,
 .contact-form select:focus {
-    outline: none;
-    border-color: #111;
-    box-shadow: 0 0 0 3px rgba(10, 37, 97, 0.22);
+    filter: brightness(1.04);
+    outline: 2px solid var(--textcolor);
+    box-shadow: none;
 }
 
 .contact-form textarea {
