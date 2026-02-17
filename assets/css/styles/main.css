@@ -21,12 +21,11 @@
     --bgcolor: #f6e6d2;
     --textcolor: #553300;
     --muted: rgba(85, 51, 0, 0.72);
-    --line: rgba(85, 51, 0, 0.28);
 }
 
 body {
     margin: 0;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:"Nunito Sans", system-ui, sans-serif;
     line-height: 1.5;
     color: var(--textcolor);
     background: var(--bgcolor);
