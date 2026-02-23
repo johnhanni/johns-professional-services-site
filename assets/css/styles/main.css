@@ -3,6 +3,12 @@
    - Standardize border styles (move shared borders to opacity-based values)
    - Clean up and group selectors (base → layout → components → utilities)
    - Add sticky nav (desktop-first; revisit mobile behavior later)
+   - Refactor to BEM-style component architecture.
+      Goals:
+        - Introduce Block–Element–Modifier naming convention.
+        - Reduce structural selectors.
+        - Standardize component prefixes.
+        - Keep specificity flat and predictable.
 
    Notes:
    - Page width (60rem) vs reading measure (70ch) is intentional — document this
@@ -143,6 +149,56 @@ nav {
 .nav-links a:hover {
    background-color: var(--textcolor);
    color: var(--bgcolor);
+}
+
+.site-footer {
+    padding: 0 1rem;
+    margin-top: clamp(4.5rem, 8vw + 3rem, 10rem);
+    background: var(--bgcolor);
+}
+
+.site-footer-container {
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.site-footer-copyright {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.site-footer-social-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.site-footer-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.site-footer-social-link {
+    color: var(--textcolor);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    border-radius: 10px;
+    transition: background-color 150ms ease;
+}
+
+.site-footer-social-link:hover {
+    background-color: var(--textcolor);
+    color: var(--bgcolor);
 }
 
 .brand {
