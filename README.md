@@ -62,7 +62,7 @@ All sensitive operations and secrets are handled server-side.
 
 ## Project Status
 
-**v1.0.0 has been released.**
+**v1.1.0 has been released.**
 
 The current version represents a stable, public-ready baseline:
 
